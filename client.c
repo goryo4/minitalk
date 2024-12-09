@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   client.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ygorget <ygorget@student.42.fr>            +#+  +:+       +#+        */
+/*   By: yolan <yolan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 11:01:04 by ygorget           #+#    #+#             */
-/*   Updated: 2024/12/06 15:57:00 by ygorget          ###   ########.fr       */
+/*   Updated: 2024/12/07 11:54:35 by yolan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,5 +70,7 @@ int main(int argc, char **argv)
         bytes(argv[2][i], pid);
         i++;
     }
+    bytes('\n', pid);
+    bytes('\0', pid);
     return (0);
 }
