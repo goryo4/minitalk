@@ -6,7 +6,7 @@
 /*   By: ygorget <ygorget@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 11:22:25 by ygorget           #+#    #+#             */
-/*   Updated: 2024/12/10 15:20:26 by ygorget          ###   ########.fr       */
+/*   Updated: 2024/12/10 16:05:52 by ygorget          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@
 
 typedef struct s_sigaction
 {
-    void    (*sa_signaction)(int, siginfo_t *, void *);
-    sigset_t sa_mask;
-    int sa_flags;
-}   t_sigaction;
+	void		(*sa_signaction)(int, siginfo_t *, void *);
+	sigset_t	sa_mask;
+	int			sa_flags;
+}				t_sigaction;
 
 #endif
