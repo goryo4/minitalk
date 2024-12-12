@@ -42,7 +42,7 @@ $(NAME_S): $(OBJ_S) $(LIBA)
 	$(CC) $(FLAGS) $(OBJ_S) -L$(LIBS) -lft -o $(NAME_S)
 
 $(NAME_C): $(OBJ_C)
-	$(CC) $(FLAGS) $(OBJ_C) -o $(NAME_C)
+	$(CC) $(FLAGS) $(OBJ_C) -L$(LIBS) -lft -o $(NAME_C)
 
 $(NAME_BONUS_S): $(OBJ_BONUS_S)
 	$(CC) $(FLAGS) $(OBJ_BONUS_S) -L$(LIBS) -lft -o $(NAME_BONUS_S)

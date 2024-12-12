@@ -6,11 +6,18 @@
 /*   By: ygorget <ygorget@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 12:06:43 by ygorget           #+#    #+#             */
-/*   Updated: 2024/12/10 15:49:29 by ygorget          ###   ########.fr       */
+/*   Updated: 2024/12/12 12:09:13 by ygorget          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
+
+void	ft_error(char *str, char *err)
+{
+	free (str);
+	ft_printf("%s\n", err);
+	exit (EXIT_FAILURE);
+}
 
 char	*strjoin(char *s1, char c)
 {
@@ -22,7 +29,7 @@ char	*strjoin(char *s1, char c)
 	len = ft_strlen(s1) + 1;
 	str = malloc(sizeof(char) * (len + 1));
 	if (!str)
-		return (0);
+		ft_error(s1, ERR_MALLOC);
 	while (s1 && s1[i])
 	{
 		str[i] = s1[i];
@@ -44,12 +51,15 @@ void	reception(int sig)
 		c = (c << 1) | 1;
 	else if (sig == SIGUSR2)
 		c = c << 1;
+	else if (sig == SIGINT)
+		exit(EXIT_FAILURE);
 	nbr++;
 	if (nbr == 8)
 	{
 		if (c == '\0')
 		{
 			ft_printf("%s", str);
+			free (str);
 			str = NULL;
 		}
 		else
@@ -64,8 +74,12 @@ int	main(void)
 
 	pid = getpid();
 	ft_printf("%d\n", pid);
-	signal(SIGUSR1, reception);
-	signal(SIGUSR2, reception);
+	if (signal(SIGUSR1, reception) == SIG_ERR)
+		ft_error(NULL, ERR_SIG);
+	if (signal(SIGUSR2, reception) == SIG_ERR)
+		ft_error(NULL, ERR_SIG);
+	if (signal(SIGINT, reception) == SIG_ERR)
+		ft_error(NULL, ERR_SIG);
 	while (1)
 		pause();
 	return (0);

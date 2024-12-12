@@ -6,11 +6,18 @@
 /*   By: ygorget <ygorget@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 12:06:43 by ygorget           #+#    #+#             */
-/*   Updated: 2024/12/10 15:30:41 by ygorget          ###   ########.fr       */
+/*   Updated: 2024/12/12 12:42:20 by ygorget          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk_bonus.h"
+
+void	ft_error(char *str, char *err)
+{
+	free (str);
+	ft_printf("%s\n", err);
+	exit (EXIT_FAILURE);
+}
 
 char	*strjoin(char *s1, char c)
 {
@@ -22,7 +29,7 @@ char	*strjoin(char *s1, char c)
 	len = ft_strlen(s1) + 1;
 	str = malloc(sizeof(char) * (len + 1));
 	if (!str)
-		return (0);
+		ft_error(NULL, ERR_SIG);
 	while (s1 && s1[i])
 	{
 		str[i] = s1[i];
@@ -50,16 +57,23 @@ void	reception(int sig, siginfo_t *info, void *context)
 		if (c == '\0')
 		{
 			ft_printf("%s", str);
+			free (str);
 			str = NULL;
 		}
 		else
 			str = strjoin(str, c);
 		nbr = 0;
+		if (kill(info->si_pid, SIGUSR2) == -1)
+			ft_error(str, ERR_KILL);
 	}
-	if (sig == SIGUSR1)
-		kill(info->si_pid, SIGUSR1);
-	else if (sig == SIGUSR2)
-		kill(info->si_pid, SIGUSR2);
+	else if (kill(info->si_pid, SIGUSR1) == -1)
+		ft_error(str, ERR_KILL);
+}
+
+void	ft_finish(int sig)
+{
+	if (sig == SIGINT)
+		exit (EXIT_SUCCESS);
 }
 
 int	main(void)
@@ -70,10 +84,13 @@ int	main(void)
 	sa.sa_sigaction = reception;
 	sigemptyset(&sa.sa_mask);
 	sa.sa_flags = SA_SIGINFO;
+	if (sigaction(SIGUSR1, &sa, NULL) == -1
+		|| sigaction(SIGUSR2, &sa, NULL) == -1)
+		ft_error(NULL, ERR_SIG);
+	if (signal(SIGINT, ft_finish) == SIG_ERR)
+		ft_error(NULL, ERR_SIG);
 	pid = getpid();
 	ft_printf("%d\n", pid);
-	sigaction(SIGUSR1, &sa, NULL);
-	sigaction(SIGUSR2, &sa, NULL);
 	while (1)
 		pause();
 	return (0);
