@@ -22,6 +22,6 @@
 # define ERR_KILL "error sending signal"
 # define ERR_SIG "Signal management failed"
 # define ERR_ARGC "there are not 3 arguments"
-# define ERR_PID "PID = 0"
+# define ERR_PID "PID is not good"
 
 #endif

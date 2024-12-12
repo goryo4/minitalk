@@ -66,7 +66,7 @@ int	main(int argc, char **argv)
 	if (argc != 3)
 		return (0);
 	pid = ft_atoi(argv[1]);
-	if (pid == 0)
+	if (pid == 0 || || pid == -1)
 		error(ERR_PID);
 	while (argv[2][i])
 	{
